@@ -4,7 +4,10 @@ A Nordic SoftDevice powered ANT+ library for the Arduino framework, intended to 
 ## Credits
 - This library is built on top of the [Adafruit Bluefruit52 library](https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib), which his part of the [nRF52 Arduino Core](https://github.com/adafruit/Adafruit_nRF52_Arduino) of Adafruit Industries.
 - This work was inspired by and proudly stealed code from [@rtgree01's forked Bluefruit52 repo](https://github.com/rtgree01/Adafruit_nRF52_Arduino/tree/add_ant/libraries/Bluefruit52Lib/src)
-- There is a similar purpose library: [antplus-arduino](https://github.com/cujomalainey/antplus-arduino), currently most suitable for external ANT radios, driven by serial interface commands. That library aims to be vendor and framework neutral and does not make any assumption about Bluefruit cooperation. Depending on use case, that library mgiht be more useful for you. 
+
+## Related works
+- There is a similar purpose library: [antplus-arduino](https://github.com/cujomalainey/antplus-arduino), currently most suitable for external ANT radios, driven by serial interface commands. That library aims to be vendor and framework neutral and does not make any assumption about Bluefruit cooperation. Depending on use case, that library might be more useful for you. 
+- There is a Teensy library ['antplus'](https://github.com/PaulStoffregen/antplus.git), which seems to lack a maintainer, but it still can be a useful resource, or just inspiration for your coding efforts. 
 
 ## Dependencies and assumptions
 - This library is assumed to be used with a nRF52 Series SoC from Nordic Semiconductor. It has been developed and tested using an nRF52840 SoC from Adafruit: [Feather nRF52840 Express](https://www.adafruit.com/product/4062)

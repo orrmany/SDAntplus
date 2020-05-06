@@ -1,6 +1,16 @@
 # BlueAnt
-A Nordic SoftDevice powered ANT+ library for the Arduino framework, intended to coexist with Adafruit Bluefruit52
+A Nordic SoftDevice powered ANT+ library for the Arduino framework, intended to coexist with Adafruit Bluefruit52, using a mixture of C- & C++-programming language files. 
 
 ## Credits
 - This library is built on top of the [Adafruit Bluefruit52 library](https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib), which his part of the [nRF52 Arduino Core](https://github.com/adafruit/Adafruit_nRF52_Arduino) of Adafruit Industries.
 - This work was inspired by and produly stealed code from [@rtgree01's forked Bluefruit52 repo](https://github.com/rtgree01/Adafruit_nRF52_Arduino/tree/add_ant/libraries/Bluefruit52Lib/src)
+
+## Dependencies and assumptions
+- This library is assumed to be used with a nRF52 Series SoC from Nordic Semiconductor.
+- This library is assumed to be used with the Arduino programming framework. It relies on the <Arduino.h> provided system classes and libraries. Adaption 
+- This library assumes the presence of a combined BLE+ANT multiprotocol softdevice from Nordic Semiconductor. It has been developed and tested against the [S340 Softdevice](https://www.nordicsemi.com/Software-and-tools/Software/S340-ANT), but it should be easy to use with other similar SoftDevices, such as S312 or S340. 
+- This library is intended to be piggy-backed onto the Adafruit Bluefruit52 libray, to provide concurrent multiprotocol capabilities with both BLE and ANT+. As consequence of this it assumes a FreeRTOS environment.
+
+# W.I.P.
+- Several ANT+ profiles are incomplete, or completely missing.
+-- Some of the profiles support only RX mode currently, for example

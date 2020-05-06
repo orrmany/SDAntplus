@@ -3,10 +3,11 @@ A Nordic SoftDevice powered ANT+ library for the Arduino framework, intended to 
 
 ## Credits
 - This library is built on top of the [Adafruit Bluefruit52 library](https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib), which his part of the [nRF52 Arduino Core](https://github.com/adafruit/Adafruit_nRF52_Arduino) of Adafruit Industries.
-- This work was inspired by and produly stealed code from [@rtgree01's forked Bluefruit52 repo](https://github.com/rtgree01/Adafruit_nRF52_Arduino/tree/add_ant/libraries/Bluefruit52Lib/src)
+- This work was inspired by and proudly stealed code from [@rtgree01's forked Bluefruit52 repo](https://github.com/rtgree01/Adafruit_nRF52_Arduino/tree/add_ant/libraries/Bluefruit52Lib/src)
+- There is a similar purpose library: [antplus-arduino](https://github.com/cujomalainey/antplus-arduino), currently most suitable for external ANT radios, driven by serial interface commands. That library aims to be vendor and framework neutral and does not make any assumption about Bluefruit cooperation. Depending on use case, that library mgiht be more useful for you. 
 
 ## Dependencies and assumptions
-- This library is assumed to be used with a nRF52 Series SoC from Nordic Semiconductor. IT has been developed and tested using an nRF52840 SoC from Adafruit: [Feather nRF52840 Express](https://www.adafruit.com/product/4062)
+- This library is assumed to be used with a nRF52 Series SoC from Nordic Semiconductor. It has been developed and tested using an nRF52840 SoC from Adafruit: [Feather nRF52840 Express](https://www.adafruit.com/product/4062)
   - Note that most of the commercially available Arduino compatible SoC somes with no ANT+ softdevice installed. Adding such softdevice and modifying the booloader, etc. is the responsibility of the user. See, for example this blog entry about the necessary changes: [S340 SoftDevice & Adafruit nRF52840 Express Feather](https://blogarak.wordpress.com/2020/03/15/s340-softdevice-adafruit-nrf52840-express-feather/)
 - This library is assumed to be used with the Arduino programming framework. It relies on the <Arduino.h> provided system classes and libraries. Adaption to other frameworks, such as mbed, relies on the availability of the Bluefruit library, see next major bullet.
   - Note that most of the available nRF52 Arduino Cores are _not_ prepared for ANT+ Adding support, such as modifying the nRF52 Arduino Core and adding the modified bootloader, etc, is the responsibility of the user. See, for example these blog entries about the necessary changes:

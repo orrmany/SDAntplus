@@ -1,4 +1,4 @@
-# BlueAnt
+# SDAntplus
 A Nordic SoftDevice powered ANT+ library for the Arduino framework, intended to coexist with Adafruit Bluefruit52, using a mixture of C- & C++-programming language files. 
 
 ## Credits

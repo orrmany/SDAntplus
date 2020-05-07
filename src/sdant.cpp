@@ -54,9 +54,9 @@ SdAnt ANTplus;
 
 void adafruit_ant_task(void *arg);
 
+#if CFG_DEBUG
 static void nrf_error_cb(uint32_t id, uint32_t pc, uint32_t info)
 {
-#if CFG_DEBUG
   PRINT_INT(id);
   PRINT_HEX(pc);
   PRINT_HEX(info);
@@ -76,8 +76,8 @@ static void nrf_error_cb(uint32_t id, uint32_t pc, uint32_t info)
 
   while (1)
     yield();
-#endif
 }
+#endif
 
 // Constructor
 SdAnt::SdAnt(void)
@@ -111,7 +111,7 @@ bool SdAnt::begin(uint8_t ant_count)
           .ucNumberOfEncryptedChannels = 0,
           .usNumberOfEvents = 64,
           .pucMemoryBlockStartLocation = m_ant_stack_buffer,
-          .usMemoryBlockByteSize = ANT_ENABLE_GET_REQUIRED_SPACE(ant_count, 0, 128, 64),
+          .usMemoryBlockByteSize = (uint16_t)(ANT_ENABLE_GET_REQUIRED_SPACE(ant_count, 0, 128, 64))
       };
 
   if (sd_ant_enable(&ant_enable_cfg) != NRF_SUCCESS) return false;
@@ -144,7 +144,7 @@ bool SdAnt::begin(uint8_t ant_count)
   TaskHandle_t ant_task_hdl;
   xTaskCreate(adafruit_ant_task, "ANT", CFG_ANT_TASK_STACKSIZE, NULL, TASK_PRIO_HIGH, &ant_task_hdl);
 
-  Bluefruit.setANTprotocolSemaphore(&_ant_event_sem);
+  Bluefruit.setMultiprotocolSemaphore(&_ant_event_sem);
 
   return true;
 }

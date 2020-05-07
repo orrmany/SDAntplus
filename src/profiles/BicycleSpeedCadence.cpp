@@ -508,7 +508,7 @@ void BicycleSpeedCadence::AddSpeedRevolution()
    page5.SetStopIndicator(0);
 
    uint32_t time = millis();
-   float since = time - m_time_of_last_speed;
+   //float since = time - m_time_of_last_speed;
    m_time_of_last_speed = time; 
 
    float ticks_since = (float)time * 1024.0 / 1000.0;

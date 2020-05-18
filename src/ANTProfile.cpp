@@ -346,7 +346,7 @@ void ANTProfile::ProcessMessage(ant_evt_t* evt)
                {
                   DecodeMessage(evt->message.ANT_MESSAGE_aucPayload);
                   newRxData = true;
-                  newMillis = millis();
+                  newTicks = xTaskGetTickCountFromISR();
                }
                break;
 

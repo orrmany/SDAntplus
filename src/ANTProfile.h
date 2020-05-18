@@ -106,7 +106,7 @@ public:
    //void setCustomDataPtr(void* ptr) { m_customDataPtr = ptr;}
    //void* getCustomDataPtr(void) {return m_customDataPtr;} 
    bool newRxData = false;
-   uint32_t newMillis=0;
+   uint32_t newTicks=0;
 
 protected:
 

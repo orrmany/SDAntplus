@@ -85,6 +85,7 @@ class SdAnt
   private:
     /*------------- SoftDevice Configuration -------------*/
 
+    // This semaphore is moved to Bluefruit, see https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/501
     SemaphoreHandle_t _ant_event_sem;
     void (*_ant_event_cb) (ant_evt_t*);
 

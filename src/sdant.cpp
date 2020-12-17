@@ -144,7 +144,7 @@ bool SdAnt::begin(uint8_t ant_count)
   TaskHandle_t ant_task_hdl;
   xTaskCreate(adafruit_ant_task, "ANT", CFG_ANT_TASK_STACKSIZE, NULL, TASK_PRIO_HIGH, &ant_task_hdl);
 
-  Bluefruit.setMultiprotocolSemaphore(&_ant_event_sem);
+  Bluefruit.setMultiprotocolSemaphore(_ant_event_sem);
 
   return true;
 }

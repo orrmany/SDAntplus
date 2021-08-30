@@ -242,6 +242,7 @@ BicycleSpeedCadence::BicycleSpeedCadence(BSCDeviceType d_t, ANTTransmissionMode 
    m_channel_sens_config.device_number      = DeviceNumber;
    m_channel_sens_config.network_number     = ANTPLUS_NETWORK_NUMBER;
 
+
    switch (d_t)
    {
       case BSCDeviceType::Speed:
@@ -289,6 +290,12 @@ BicycleSpeedCadence::BicycleSpeedCadence(BSCDeviceType d_t, ANTTransmissionMode 
 
 
    m_time_of_last_speed = millis();
+   m_accumulatedSpeedValue                  = 0;
+   m_previousReceivedSpeedValue             = 0;
+   m_accumulatedCadenceValue                = 0;
+   m_previousReceivedCadenceValue           = 0;
+   m_currentSpeedValue                      = 0;
+   m_currentCadenceValue                    = 0;
 
 //   _OnComputedHeartRate_cb = NULL;
 }
@@ -508,7 +515,7 @@ void BicycleSpeedCadence::AddSpeedRevolution()
    page5.SetStopIndicator(0);
 
    uint32_t time = millis();
-   float since = time - m_time_of_last_speed;
+   //float since = time - m_time_of_last_speed;
    m_time_of_last_speed = time; 
 
    float ticks_since = (float)time * 1024.0 / 1000.0;

@@ -398,6 +398,15 @@ private:
    void DecodeMessage(uint8_t* p_message_payload);
 
    // void (*_OnComputedHeartRate_cb) (int);
+   void (*_OnCadenceData_cb) (uint16_t);
+   void (*_OnSpeedData_cb) (int16_t);
+   int16_t m_accumulatedSpeedValue;
+   int16_t m_previousReceivedSpeedValue;
+   int16_t m_accumulatedCadenceValue;
+   int16_t m_previousReceivedCadenceValue;
+   int16_t m_currentSpeedValue;
+   int16_t m_currentCadenceValue;
+
 };
 
 

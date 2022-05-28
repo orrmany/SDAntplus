@@ -42,14 +42,19 @@ SOFTWARE.
 // Logging is done both to BLEUart and to Serial
 
 #include "ANTProfile.h"
-#include "Profiles/Radar.h"
+#include "profiles/Radar.h"
 #include "sdant.h"
 
+#include <Adafruit_NeoPixel.h>
 
 #include <bluefruit.h>
 //#include <bluefruit52.h>
 //#include <Adafruit_LittleFS.h>
 //#include <InternalFileSystem.h>
+
+// Adafruit Feather M4 Express uses pin 8 for its built-in  NeoPixel.
+#define NEOPIXEL_PIN 8
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // BLE Service
 //BLEDfu  bledfu;  // OTA DFU service
@@ -68,11 +73,19 @@ Radar radar(RX);
 void _OnVehicleStatusChanged(bool hasVehicles)
 {
   if (hasVehicles) {
+    digitalWrite(LED_BUILTIN, HIGH);
     Serial.println("!!! OH NO! CARS");
     bleuart.println("!!! OH NO! CARS");
-  } else {
+
+    strip.setPixelColor(0, 0xFF, 0, 0);
+    strip.show();
+} else {
+    digitalWrite(LED_BUILTIN, LOW);
     Serial.println("OH, NO CARS <3");
     bleuart.println("OH, NO CARS <3");
+
+    strip.setPixelColor(0, 0, 0xFF, 0);
+    strip.show();
   }
 }
 void _OnThreatDataUpdated(int page, ant_radar_threats_t threats[4])
@@ -107,6 +120,12 @@ void PrintUnhandledANTEvent(ant_evt_t *evt)
     )
     Serial.printf("  (%s)", AntEventType2LongDescription(evt));
     Serial.println();
+
+    if (evt->event == EVENT_CHANNEL_CLOSED) {
+          digitalWrite(LED_BUILTIN, LOW);
+          strip.setPixelColor(0, 0, 0, 0);
+          strip.show();
+    }
 }
 void ReopenANTChannel(ant_evt_t *evt)
 {
@@ -122,6 +141,13 @@ void ReopenANTChannel(ant_evt_t *evt)
 
 void setup(void)
 {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
+
+  strip.begin();
+  strip.setBrightness(80);
+  strip.show();
+
   bool ret = false;
   Serial.begin(115200);
   while (!Serial) yield;

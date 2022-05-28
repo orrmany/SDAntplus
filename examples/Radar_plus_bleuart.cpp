@@ -74,25 +74,43 @@ void _OnVehicleStatusChanged(bool hasVehicles)
 {
   if (hasVehicles) {
     digitalWrite(LED_BUILTIN, HIGH);
-    Serial.println("!!! OH NO! CARS");
-    bleuart.println("!!! OH NO! CARS");
+//    Serial.println("!!! OH NO! CARS");
+//    bleuart.println("!!! OH NO! CARS");
 
     strip.setPixelColor(0, 0xFF, 0, 0);
     strip.show();
 } else {
     digitalWrite(LED_BUILTIN, LOW);
-    Serial.println("OH, NO CARS <3");
-    bleuart.println("OH, NO CARS <3");
+//    Serial.println("OH, NO CARS <3");
+//    bleuart.println("OH, NO CARS <3");
 
     strip.setPixelColor(0, 0, 0xFF, 0);
     strip.show();
   }
 }
-void _OnThreatDataUpdated(int page, ant_radar_threats_t threats[4])
+
+int lastTotal = 0;
+ant_radar_threats_t lastThreats[RADAR_NUM_THREATS_PER_PAGE*2];
+
+void _OnThreatDataUpdated(int page, ant_radar_threats_t threats[RADAR_NUM_THREATS_PER_PAGE])
 {
+  int total = 0;
   for (int i = 0; i < RADAR_NUM_THREATS_PER_PAGE; i ++ ) {
-  Serial.printf("Radar page %d threat %d level %d side %d range %d speed %d\r\n", page, i, threats[i].level, threats[i].side, threats[i].range_meters, threats[i].speed_mps);
-  bleuart.printf("Radar page %d threat %d level %d side %d range %d speed %d\n", page, threats[i].level, threats[i].side, threats[i].range_meters, threats[i].speed_mps);
+    int threatId = (page * RADAR_NUM_THREATS_PER_PAGE) + i;
+
+    if ((threats[i].level != lastThreats[threatId].level) || (threats[i].side != lastThreats[threatId].side) ||  (threats[i].range_meters != lastThreats[threatId].range_meters) ||  (threats[i].speed_mps != lastThreats[threatId].speed_mps)) {
+      Serial.printf("Radar threat #%d level %d side %d range %d m speed %d m/s\r\n", threatId, threats[i].level, threats[i].side, threats[i].range_meters, threats[i].speed_mps);
+      bleuart.printf("Radar threat #%d level %d side %d range %d m speed %d m/s\n", threatId, threats[i].level, threats[i].side, threats[i].range_meters, threats[i].speed_mps);
+      lastThreats[threatId] = threats[i];
+      }
+
+    if (threats[i].level & ANT_RADAR_ANY_VEHICLE_APPROACH > 0) total++;
+  }
+
+  if (total != lastTotal) {
+    Serial.printf("Total threats: %d\r\n", total);
+    bleuart.printf("Total threats: %d\n", total);
+    lastTotal = total;
   }
 }
 void _OnStatusUpdated(ant_radar_status_t status)
@@ -120,15 +138,15 @@ void PrintUnhandledANTEvent(ant_evt_t *evt)
     )
     Serial.printf("  (%s)", AntEventType2LongDescription(evt));
     Serial.println();
-
-    if (evt->event == EVENT_CHANNEL_CLOSED) {
-          digitalWrite(LED_BUILTIN, LOW);
-          strip.setPixelColor(0, 0, 0, 0);
-          strip.show();
-    }
 }
 void ReopenANTChannel(ant_evt_t *evt)
 {
+  if (evt->event == EVENT_RX_FAIL_GO_TO_SEARCH || evt->event == EVENT_CHANNEL_CLOSED ) {
+    digitalWrite(LED_BUILTIN, LOW);
+    strip.setPixelColor(0, 0, 0, 0);
+    strip.show();
+  }
+
   if (evt->event == EVENT_CHANNEL_CLOSED ) {
     Serial.printf("Channel #%d closed for %s\r\n", evt->channel,ANTplus.getAntProfileByChNum(evt->channel)->getName()); 
     Serial.printf("Reopening...");
@@ -145,16 +163,16 @@ void setup(void)
   digitalWrite(LED_BUILTIN, LOW);
 
   strip.begin();
-  strip.setBrightness(80);
+  strip.setPixelColor(0, 0x80, 0x80, 0);
+  strip.setBrightness(16);
   strip.show();
 
-  bool ret = false;
   Serial.begin(115200);
-  while (!Serial) yield;
+  if (!Serial) delay(4000);
 
   Serial.println("Adding Radar profile");
   radar.SetOnVehicleStatusChanged(_OnVehicleStatusChanged);
-//  radar.SetOnThreatDataUpdated(_OnThreatDataUpdated);
+  radar.SetOnThreatDataUpdated(_OnThreatDataUpdated);
   radar.SetOnStatusUpdated(_OnStatusUpdated);
   radar.SetOnVendorInfoUpdated(_OnVendorInfoUpdated);
   radar.SetOnDeviceInfoUpdated(_OnDeviceInfoUpdated);
@@ -169,6 +187,7 @@ void setup(void)
   Bluefruit.autoConnLed(true);
   Bluefruit.configPrphBandwidth(BANDWIDTH_NORMAL);
 
+  bool ret = false;
   Serial.print("Starting BLE stack. Expecting 'true':");
   ret = Bluefruit.begin(1, 0);
   Serial.println(ret);
@@ -200,6 +219,9 @@ void setup(void)
 
   // Set up and start advertising
   startAdv();
+
+  strip.setPixelColor(0, 0, 0, 0xFF);
+  strip.show();
 
   Serial.println("Setup is finished!");
 }

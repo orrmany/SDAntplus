@@ -22,15 +22,15 @@ void RadarThreatsPage::Decode(uint8_t const* buffer) {
     threats[2].side = (ant_radar_threat_side_t)((p_incoming_data->sides & 0x0C) >> 2);
     threats[3].side = (ant_radar_threat_side_t)(p_incoming_data->sides & 0x03);
 
-    threats[0].range_meters = (p_incoming_data->ranges[0] & 0xFC) >> 2;
-    threats[1].range_meters = ((p_incoming_data->ranges[0] & 0x03) << 4) | ((p_incoming_data->ranges[1] & 0xF0) >> 4);
-    threats[2].range_meters = ((p_incoming_data->ranges[1] & 0x0F) << 2) | ((p_incoming_data->ranges[2] & 0xC0) >> 6);
-    threats[3].range_meters = (p_incoming_data->ranges[1] & 0x3F);
+    threats[0].range_meters = rangeToMeters((p_incoming_data->ranges[0] & 0xFC) >> 2);
+    threats[1].range_meters = rangeToMeters((p_incoming_data->ranges[0] & 0x03) << 4) | ((p_incoming_data->ranges[1] & 0xF0) >> 4);
+    threats[2].range_meters = rangeToMeters((p_incoming_data->ranges[1] & 0x0F) << 2) | ((p_incoming_data->ranges[2] & 0xC0) >> 6);
+    threats[3].range_meters = rangeToMeters(p_incoming_data->ranges[1] & 0x3F);
 
-    threats[0].speed_mps = (p_incoming_data->speeds[0] & 0xF0) >> 4;
-    threats[1].speed_mps = (p_incoming_data->speeds[0] & 0x0F);
-    threats[2].speed_mps = (p_incoming_data->speeds[1] & 0xF0) >> 4;
-    threats[3].speed_mps = (p_incoming_data->speeds[1] & 0x0F);
+    threats[0].speed_mps = speedToMPS((p_incoming_data->speeds[0] & 0xF0) >> 4);
+    threats[1].speed_mps = speedToMPS(p_incoming_data->speeds[0] & 0x0F);
+    threats[2].speed_mps = speedToMPS((p_incoming_data->speeds[1] & 0xF0) >> 4);
+    threats[3].speed_mps = speedToMPS(p_incoming_data->speeds[1] & 0x0F);
 }
 
 //

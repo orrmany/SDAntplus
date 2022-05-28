@@ -22,6 +22,8 @@ typedef enum {
   ANT_RADAR_RESERVED_THREAT = 3
 } ant_radar_threat_level_t;
 
+#define ANT_RADAR_ANY_VEHICLE_APPROACH 3 // ANT_RADAR_VEHICLE_APPROACH | ANT_RADAR_VEHCILE_FAST_APPROACH
+
 typedef enum {
   ANT_RADAR_NO_SIDE = 0,
   ANT_RADAR_RIGHT_SIDE = 1,
@@ -59,6 +61,9 @@ private:
       uint8_t speeds[2];
    }ant_radar_threats_data_layout_t;
 
+
+   uint32_t rangeToMeters(uint32_t value) { return uint32_t(float(value) * 3.125); }
+   uint32_t speedToMPS(uint32_t value) { return uint32_t(float(value) * 3.04); }
 };
 
 typedef enum {
@@ -140,7 +145,7 @@ public:
 
    void ProcessMessage(ant_evt_t*);
    void SetOnVehicleStatusChanged(void (*fp)(bool)) { _OnVehicleStatusChanged_cb = fp; }
-   void SetOnThreatDataUpdated(void (*fp)(int, ant_radar_threats_t[4])) { _OnThreatDataUpdated_cb = fp; }
+   void SetOnThreatDataUpdated(void (*fp)(int, ant_radar_threats_t[RADAR_NUM_THREATS_PER_PAGE])) { _OnThreatDataUpdated_cb = fp; }
    void SetOnStatusUpdated(void (*fp)(ant_radar_status_t)) { _OnStatusUpdated_cb = fp; }
    void SetOnVendorInfoUpdated(void (*fp)(ant_radar_vendor_info_t)) { _OnVendorInfoUpdated_cb = fp; }
    void SetOnDeviceInfoUpdated(void (*fp)(ant_radar_device_info_t)) { _OnDeviceInfoUpdated_cb = fp; }

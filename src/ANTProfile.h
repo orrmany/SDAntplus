@@ -100,7 +100,7 @@ public:
    const char* getName(void) {return name;}
    uint8_t getChannelNumber(void) { return m_channel_number;}
 
-   void ProcessMessage(ant_evt_t* evt);
+   virtual void ProcessMessage(ant_evt_t* evt);
    void setUnhandledEventListener(void (*fp)(ant_evt_t* evt)) { _AntUnhandledEventLister = fp; };
    void setAllEventListener(void (*fp)(ant_evt_t* evt)) { _AntAllEventLister = fp; };
    //void setCustomDataPtr(void* ptr) { m_customDataPtr = ptr;}

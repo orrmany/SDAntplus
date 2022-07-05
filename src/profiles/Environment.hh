@@ -253,7 +253,7 @@ public:
     EnvironmentSensor(ANTTransmissionMode mode);
     //~EnvironmentRx();
     //bool Setup();
-    //void ProcessMessage(ant_evt_t*);
+    void ProcessMessage(ant_evt_t*) override;
     void SetOnTemperatureData(void (*fp)(int16_t)) {_OnTemperatureData_cb = fp;}
 };
 

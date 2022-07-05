@@ -92,7 +92,7 @@ public:
 
    ANTProfile(ANTTransmissionMode mode);
 
-   //profile operartions 
+   //profile operations
    uint32_t Setup(uint8_t channel);
     
    //Profile name 
@@ -100,9 +100,10 @@ public:
    const char* getName(void) {return name;}
    uint8_t getChannelNumber(void) { return m_channel_number;}
 
-   void ProcessMessage(ant_evt_t* evt);
+   virtual void ProcessMessage(ant_evt_t* evt);
    void setUnhandledEventListener(void (*fp)(ant_evt_t* evt)) { _AntUnhandledEventLister = fp; };
    void setAllEventListener(void (*fp)(ant_evt_t* evt)) { _AntAllEventLister = fp; };
+   void setBeforeOpenChannel(uint32_t (*fp)(uint8_t channel)) { _BeforeOpenChannel = fp; };
    //void setCustomDataPtr(void* ptr) { m_customDataPtr = ptr;}
    //void* getCustomDataPtr(void) {return m_customDataPtr;} 
    bool newRxData = false;
@@ -114,7 +115,8 @@ protected:
    virtual void EncodeMessage() = 0;
    uint32_t SendMessage();
    void (*_AntUnhandledEventLister)(ant_evt_t* evt) = NULL; 
-   void (*_AntAllEventLister)(ant_evt_t* evt) = NULL; 
+   void (*_AntAllEventLister)(ant_evt_t* evt) = NULL;
+   uint32_t (*_BeforeOpenChannel)(uint8_t chan) = NULL;
    const char *  name = "";
 
    uint8_t m_channel_number; ///< Channel number assigned to the profile.

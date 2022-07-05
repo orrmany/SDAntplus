@@ -318,8 +318,6 @@ class BicycleSpeedCadence : public ANTProfile
 public:
    BicycleSpeedCadence(BSCDeviceType d_t, ANTTransmissionMode mode);
 
-   void ProcessMessage(ant_evt_t*);
-
    // void SetSpeed(float val);
    // float GetSpeed() { return m_speed; };
 

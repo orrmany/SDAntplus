@@ -459,6 +459,14 @@ uint32_t ANTProfile::Setup(uint8_t channel)
         }
     }
 
+    if (_BeforeOpenChannel) {
+      err_code = _BeforeOpenChannel(m_channel_number);
+      if (err_code != NRF_SUCCESS)
+      {
+        return err_code;
+      }
+    }
+
     err_code = sd_ant_channel_open(m_channel_number);
     if (err_code != NRF_SUCCESS)
     {

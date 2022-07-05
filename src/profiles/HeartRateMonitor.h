@@ -222,8 +222,6 @@ class HeartRateMonitor : public ANTProfile
 public:
    HeartRateMonitor(ANTTransmissionMode mode);
 
-   void ProcessMessage(ant_evt_t*);
-
    void SetOnComputedHeartRate(void (*fp)(int)) { _OnComputedHeartRate_cb = fp;}
 
 
